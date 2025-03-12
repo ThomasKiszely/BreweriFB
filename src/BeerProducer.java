@@ -1,16 +1,14 @@
-import java.util.ArrayList;
 import java.util.List;
 
-public class Producer implements Runnable {
+public class BeerProducer implements Runnable {
     Buffer beerCounter;
 
 
     List<Beer> beerList;
     List<Soda> sodaList;
 
-    public Producer(List<Beer> beerList, List<Soda> sodaList) {
+    public BeerProducer(List<Beer> beerList) {
         this.beerList = beerList;
-        this.sodaList = sodaList;
     }
 
 
@@ -23,7 +21,7 @@ public class Producer implements Runnable {
         produceBeer();
     }
 
-    private void produceBeer() {
+    private synchronized void produceBeer() {
         while (true) {
             synchronized (beerList) {
                 for (int i = 0; i < 10; i++) {
@@ -33,7 +31,7 @@ public class Producer implements Runnable {
                         beerList.notify();
                         try {
                             beerList.wait();
-                            System.out.println("Now waiting");
+                            System.out.println("Now waiting for beerproducer");
                         } catch (InterruptedException e) {
                             throw new RuntimeException(e);
                         }

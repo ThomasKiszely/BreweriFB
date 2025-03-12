@@ -1,17 +1,14 @@
-import java.util.ArrayList;
 import java.util.List;
 
-public class Consumer implements Runnable {
+public class BeerConsumer implements Runnable {
     Buffer beerCounter;
-    private Boolean switcher = true;
 
     List<Beer> beerList;
     List<Soda> sodaList;
-//    Producer beerProducer = new Producer(beerList);
 
-    public Consumer(List<Beer> beerList, List<Soda> sodaList) {
+
+    public BeerConsumer(List<Beer> beerList) {
         this.beerList = beerList;
-        this.sodaList = sodaList;
     }
     @Override
     public void run() {
@@ -21,16 +18,22 @@ public class Consumer implements Runnable {
     private void consume(){
         consumeBeer();
     }
-    private void consumeBeer() {
+    private synchronized void consumeBeer() {
         while (true){
             synchronized (beerList) {
                 for (int i = 9; i >= 0; i--) {
                     System.out.println("Now consuming " + beerList.get(i));
+                    try {
+                        Thread.sleep(200);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                     beerList.remove(beerList.get(i));
                     if (beerList.isEmpty()) {
                         beerList.notify();
                         try {
                             beerList.wait();
+                            System.out.println("Now waiting for beerconsumer");
                         } catch (InterruptedException e) {
                             throw new RuntimeException(e);
                         }
