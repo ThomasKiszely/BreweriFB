@@ -6,10 +6,8 @@ public class SodaProducer implements Runnable {
     List<Soda> sodaList;
 
     public SodaProducer(List<Soda> sodaList) {
-
         this.sodaList = sodaList;
     }
-
 
     @Override
     public void run() {

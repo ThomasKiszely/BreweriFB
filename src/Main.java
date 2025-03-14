@@ -16,10 +16,10 @@ public class Main {
         Thread duffConsumer = new Thread(beerConsumer);
         Thread buzzProducer = new Thread(sodaProducer);
         Thread buzzConsumer = new Thread(sodaConsumer);
+
         duffProducer.start();
         duffConsumer.start();
         buzzProducer.start();
         buzzConsumer.start();
-
     }
 }
